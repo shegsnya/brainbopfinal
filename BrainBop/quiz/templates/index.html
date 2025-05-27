@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Quiz App - Home</title>
+  <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="/" class="logo">Quiz App</a>
+      <ul class="nav-links">
+        <li><a href="{% url 'quiz:list_quizzes' %}">Quizzes</a></li>
+        <li><a href="{% url 'quiz:progress' %}">Progress</a></li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container main-content">
+
+    <div class="alert success-alert" role="alert">
+      × You have successfully logged in
+    </div>
+
+    <section class="user-info">
+      <h2>Hello, {{ user.username }}</h2>
+      <p><strong>Name:</strong> {{ user.get_full_name|default:"N/A" }}</p>
+      <p><strong>Email:</strong> {{ user.email }}</p>
+    </section>
+
+    <section class="quiz-overview">
+      <h3>Available Quizzes</h3>
+      {% if quizzes %}
+      <div class="quiz-grid">
+        {% for quiz in quizzes %}
+        <div class="quiz-card">
+          <h4>{{ quiz.title }}</h4>
+          <p>{{ quiz.description|default:"No description available." }}</p>
+          <a href="{% url 'quiz:take_quiz' quiz.slug %}" class="start-btn">Start Quiz</a>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="no-quizzes">There are no available quizzes.</p>
+      {% endif %}
+    </section>
+
+  </div>
+
+</body>
+</html>
